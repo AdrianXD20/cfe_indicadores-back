@@ -18,7 +18,13 @@ const mefRoutes = require('./routes/mef')
 const app = express();
 const PORT = 3000;
 
-app.use(cors());
+// Configurar CORS para permitir cualquier dominio y dirección
+app.use(cors({
+  origin: '*', // Permite cualquier origen
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Métodos permitidos
+  allowedHeaders: ['Content-Type', 'Authorization'] // Encabezados permitidos
+}));
+
 app.use(express.json());
 app.use('/api/imu', imuRoutes);
 app.use('/api/comser',comserRoutes);
@@ -32,6 +38,7 @@ app.use('/api/cap',capRoutes);
 app.use('/api/cecap',cecapRoutes);
 app.use('/api/mea', meaRoutes);
 app.use('/api/mef', mefRoutes);
+
 
 
 // Conexión a MongoDB Atlas
