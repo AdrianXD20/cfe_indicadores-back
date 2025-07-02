@@ -7,32 +7,22 @@ router.post('/', async (req, res) => {
   try {
     const nuevoIndicador = new Indicador(req.body);
     await nuevoIndicador.save();
+    console.log('Indicador creado:', nuevoIndicador); // Log para depuración
     res.status(201).json(nuevoIndicador);
   } catch (error) {
+    console.error('Error al crear indicador:', error);
     res.status(500).json({ error: 'Error al agregar indicador' });
   }
 });
 
-// Obtener todos los indicadores con paginación
+// Obtener todos los indicadores
 router.get('/', async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-
-    const indicadores = await Indicador.find()
-      .skip(skip)
-      .limit(limit)
-      .sort({ createdAt: -1 });
-    const total = await Indicador.countDocuments();
-
-    res.json({
-      indicadores,
-      total,
-      page,
-      pages: Math.ceil(total / limit),
-    });
+    const indicadores = await Indicador.find().sort({ createdAt: -1 });
+    console.log('Indicadores devueltos:', indicadores); // Log para depuración
+    res.json(indicadores);
   } catch (error) {
+    console.error('Error en GET /api/imu:', error);
     res.status(500).json({ error: 'Error al obtener indicadores' });
   }
 });
