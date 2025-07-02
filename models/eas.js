@@ -8,6 +8,7 @@ const indicadorSchema = new mongoose.Schema({
   division: String,
   zona: String,
   Departamento: String,
+  year: Number,
   acumulado: Number,
 });
 
