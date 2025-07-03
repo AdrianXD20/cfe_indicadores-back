@@ -38,9 +38,9 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const indicadorActualizado = await Indicador.findIdAndUpdate(
-      { id: parseInt(req.params.id) },
+      req.params.id,
       req.body,
-      { new: true }
+      { new: true, runValidators: true }
     );
     res.json(indicadorActualizado);
   } catch (error) {
