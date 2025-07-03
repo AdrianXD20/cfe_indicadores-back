@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
 // Obtener un indicador por ID
 router.get('/:id', async (req, res) => {
   try {
-    const indicador = await Indicador.findOne({ id: parseInt(req.params.id) });
+    const indicador = await Indicador.findById(req.params.id);
     if (!indicador) return res.status(404).json({ error: 'Indicador no encontrado' });
     res.json(indicador);
   } catch (error) {
