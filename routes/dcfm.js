@@ -42,6 +42,7 @@ router.put('/:id', async (req, res) => {
       req.body,
       { new: true, runValidators: true }
     );
+    if (!indicadorActualizado) return res.status(404).json({ error: 'Indicador no encontrado' });
     res.json(indicadorActualizado);
   } catch (error) {
     res.status(500).json({ error: 'Error al actualizar indicador' });
