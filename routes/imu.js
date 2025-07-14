@@ -15,10 +15,15 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Obtener todos los indicadores
+// Obtener todos los indicadores (con filtro opcional por año)
 router.get('/', async (req, res) => {
   try {
-    const indicadores = await Indicador.find().sort({ createdAt: -1 });
+    const { year } = req.query; // Obtener el parámetro year de la URL (ej: ?year=2025)
+    let query = {}; // Objeto de consulta vacío por defecto
+    if (year) {
+      query.year = parseInt(year); // Convertir a número, ya que el modelo tiene year como Number
+    }
+    const indicadores = await Indicador.find(query).sort({ createdAt: -1 });
     console.log('Indicadores devueltos:', indicadores); // Log para depuración
     res.json(indicadores);
   } catch (error) {
