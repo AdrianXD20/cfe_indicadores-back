@@ -51,3 +51,4 @@ mongoose.connect('mongodb+srv://adricarav0528:br7k5BNaQkMaRyNf@cluster0.hm2eqzj.
   app.listen(PORT, () => console.log(`Servidor en http://localhost:${PORT}`));
 })
 .catch(err => console.error('Error al conectar a MongoDB Atlas:', err));
+
