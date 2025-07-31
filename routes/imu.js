@@ -81,4 +81,44 @@ router.post('/batch', async (req, res) => {
     }
 });
 
+// Actualizar indicadores en lote
+router.put('/batch', async (req, res) => {
+    try {
+        const indicadores = req.body; // Array de objetos con _id, month, year, real, meta, acumulado, Departamento
+        const updatedIndicadores = [];
+
+        for (const indicador of indicadores) {
+            if (indicador._id) {
+                // Actualizar indicador existente
+                const updated = await Indicador.findByIdAndUpdate(
+                    indicador._id,
+                    {
+                        month: indicador.month,
+                        year: indicador.year,
+                        real: indicador.real,
+                        meta: indicador.meta,
+                        acumulado: indicador.acumulado,
+                        Departamento: indicador.Departamento
+                    },
+                    { new: true, runValidators: true }
+                );
+                if (updated) {
+                    updatedIndicadores.push(updated);
+                }
+            } else {
+                // Crear nuevo indicador si no tiene _id
+                const newIndicador = new Indicador(indicador);
+                const saved = await newIndicador.save();
+                updatedIndicadores.push(saved);
+            }
+        }
+
+        console.log('Indicadores actualizados/creados:', updatedIndicadores);
+        res.status(200).json(updatedIndicadores);
+    } catch (error) {
+        console.error('Error al actualizar indicadores en batch:', error);
+        res.status(500).json({ error: 'Error al actualizar indicadores' });
+    }
+});
+
 module.exports = router;
