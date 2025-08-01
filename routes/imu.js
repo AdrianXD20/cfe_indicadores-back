@@ -15,21 +15,24 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Obtener todos los indicadores (con filtro opcional por año)
+// Obtener todos los indicadores (con filtros opcionales por año y mes)
 router.get('/', async (req, res) => {
-  try {
-    const { year } = req.query; // Obtener el parámetro year de la URL (ej: ?year=2025)
-    let query = {}; // Objeto de consulta vacío por defecto
-    if (year) {
-      query.year = parseInt(year); // Convertir a número, ya que el modelo tiene year como Number
+    try {
+        const { year, month } = req.query;
+        let query = {};
+        if (year) {
+            query.year = parseInt(year);
+        }
+        if (month) {
+            query.month = month;
+        }
+        const indicadores = await Indicador.find(query).sort({ createdAt: -1 });
+        console.log('Indicadores devueltos:', indicadores);
+        res.json(indicadores);
+    } catch (error) {
+        console.error('Error en GET /api/imu:', error);
+        res.status(500).json({ error: 'Error al obtener indicadores', details: error.message });
     }
-    const indicadores = await Indicador.find(query).sort({ createdAt: -1 });
-    console.log('Indicadores devueltos:', indicadores); // Log para depuración
-    res.json(indicadores);
-  } catch (error) {
-    console.error('Error en GET /api/imu:', error);
-    res.status(500).json({ error: 'Error al obtener indicadores' });
-  }
 });
 
 // Obtener un indicador por _id
