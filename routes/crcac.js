@@ -69,4 +69,16 @@ router.delete('/:id', async (req, res) => {
       }
 });
 
+router.post('/batch', async (req, res) => {
+    try {
+        const indicadores = req.body; // Espera un array de objetos
+        const nuevosIndicadores = await Indicador.insertMany(indicadores);
+        console.log('Indicadores creados:', nuevosIndicadores);
+        res.status(201).json(nuevosIndicadores);
+    } catch (error) {
+        console.error('Error al crear indicadores en batch:', error);
+        res.status(500).json({ error: 'Error al crear indicadores en batch' });
+    }
+});
+
 module.exports = router;
