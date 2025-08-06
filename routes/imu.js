@@ -48,21 +48,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Actualizar un indicador
-router.put('/:id', async (req, res) => {
-    try {
-        const indicadorActualizado = await Indicador.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true, runValidators: true }
-        );
-        if (!indicadorActualizado) return res.status(404).json({ error: 'Indicador no encontrado' });
-        res.json(indicadorActualizado);
-    } catch (error) {
-        console.error('Error al actualizar indicador:', error);
-        res.status(500).json({ error: 'Error al actualizar indicador', details: error.message });
-    }
-});
+
 
 // Eliminar un indicador
 router.delete('/:id', async (req, res) => {
@@ -133,6 +119,22 @@ router.put('/batch', async (req, res) => {
     } catch (error) {
         console.error('Error al actualizar indicadores:', error);
         res.status(500).json({ error: 'Error interno', details: error.message });
+    }
+});
+
+// Actualizar un indicador
+router.put('/:id', async (req, res) => {
+    try {
+        const indicadorActualizado = await Indicador.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true, runValidators: true }
+        );
+        if (!indicadorActualizado) return res.status(404).json({ error: 'Indicador no encontrado' });
+        res.json(indicadorActualizado);
+    } catch (error) {
+        console.error('Error al actualizar indicador:', error);
+        res.status(500).json({ error: 'Error al actualizar indicador', details: error.message });
     }
 });
 
