@@ -40,9 +40,14 @@ app.use('/api/mea', meaRoutes);
 app.use('/api/mef', mefRoutes);
 
 
+/** 
 
-// Conexión a MongoDB Atlas
 mongoose.connect('mongodb+srv://adricarav0528:br7k5BNaQkMaRyNf@cluster0.hm2eqzj.mongodb.net/cfe_indicadores?retryWrites=true&w=majority&appName=Cluster0', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})*/
+// Conexión a MongoDB Atlas
+mongoose.connect('mongodb://localhost:27017/cfe_indicadores', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })

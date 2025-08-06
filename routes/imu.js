@@ -96,14 +96,12 @@ router.put('/batch', async (req, res) => {
         const updatedIndicadores = [];
 
         for (const indicador of indicadores) {
-            // Validar que el _id sea un ObjectId válido
             if (indicador._id && !mongoose.isValidObjectId(indicador._id)) {
                 console.warn(`ID inválido omitido: ${indicador._id}`);
-                continue; // Saltar este indicador si el _id no es válido
+                continue;
             }
 
             if (indicador._id) {
-                // Actualizar indicador existente
                 const updated = await Indicador.findByIdAndUpdate(
                     indicador._id,
                     {
@@ -122,7 +120,6 @@ router.put('/batch', async (req, res) => {
                     console.warn(`Indicador con ID ${indicador._id} no encontrado`);
                 }
             } else {
-                // Crear nuevo indicador si no tiene _id
                 const newIndicador = new Indicador({
                     month: indicador.month,
                     year: indicador.year,
