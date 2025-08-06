@@ -89,6 +89,7 @@ router.post('/batch', async (req, res) => {
     }
 });
 
+//
 // Actualizar indicadores en lote
 router.put('/batch', async (req, res) => {
     try {
@@ -96,12 +97,7 @@ router.put('/batch', async (req, res) => {
         const updatedIndicadores = [];
 
         for (const indicador of indicadores) {
-            if (indicador._id && !mongoose.isValidObjectId(indicador._id)) {
-                console.warn(`ID inválido omitido: ${indicador._id}`);
-                continue;
-            }
-
-            if (indicador._id) {
+            if (indicador._id && mongoose.isValidObjectId(indicador._id)) {
                 const updated = await Indicador.findByIdAndUpdate(
                     indicador._id,
                     {
@@ -114,11 +110,7 @@ router.put('/batch', async (req, res) => {
                     },
                     { new: true, runValidators: true }
                 );
-                if (updated) {
-                    updatedIndicadores.push(updated);
-                } else {
-                    console.warn(`Indicador con ID ${indicador._id} no encontrado`);
-                }
+                if (updated) updatedIndicadores.push(updated);
             } else {
                 const newIndicador = new Indicador({
                     month: indicador.month,
@@ -134,14 +126,13 @@ router.put('/batch', async (req, res) => {
         }
 
         if (updatedIndicadores.length === 0) {
-            return res.status(400).json({ error: 'No se actualizaron ni crearon indicadores' });
+            return res.status(400).json({ error: 'No se actualizó ningún indicador.' });
         }
 
-        console.log('Indicadores actualizados/creados:', updatedIndicadores);
-        res.status(200).json(updatedIndicadores);
+        res.status(200).json({ message: 'Indicadores actualizados o creados con éxito', data: updatedIndicadores });
     } catch (error) {
-        console.error('Error al actualizar indicadores en batch:', error);
-        res.status(500).json({ error: 'Error al actualizar indicadores', details: error.message });
+        console.error('Error al actualizar indicadores:', error);
+        res.status(500).json({ error: 'Error interno', details: error.message });
     }
 });
 
